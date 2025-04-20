@@ -1,5 +1,5 @@
-torch==2.5.0+cpu
-torchvision==0.20.0+cpu
+torch==2.4.1+cpu
+torchvision==0.19.1+cpu
 opencv-python==4.10.0.84
 numpy
 fastapi
