@@ -13,14 +13,14 @@ app = FastAPI()
 # Allow CORS for Flutter app
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Update to your Flutter app’s domain in production
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 # Download model file at startup
-MODEL_URL = "https://drive.google.com/file/d/1fXSd1cKcn02dxjf_F7Wn0YPXyC8XFQhj/view?usp=sharing"  # Replace with Google Drive/Dropbox direct link
+MODEL_URL = "https://drive.google.com/file/d/11lVY8crVCZIQptUjqrXpWDgVsRSHS-Qj/view?usp=sharing"  
 MODEL_PATH = "resnet_checkpoint.pth"
 
 if not os.path.exists(MODEL_PATH):
@@ -40,7 +40,7 @@ preprocess = transforms.Compose([
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
 ])
 
-# Color palettes
+# Color palettes (unchanged)
 palettes = {
     0: ("Porcelain", ["#F5D0C3", "#FFE4E1", "#E6E6FA", "#D8BFD8", "#98FF98", "#FFB6C1", "#F0FFFF", "#87CEEB", "#FFF0F5", "#FFDAB9"]),
     1: ("Fair", ["#FFC0CB", "#B0E0E6", "#E0B0FF", "#FAFAD2", "#FFD700", "#D2B48C", "#AFEEEE", "#E6E6FA", "#FFA07A", "#FFE4B5"]),
@@ -58,7 +58,7 @@ def predict_skin_tone(image: Image.Image) -> dict:
     image_tensor = preprocess(image).unsqueeze(0)
     with torch.no_grad():
         output = model(image_tensor)
-        pred_class = output.argmax().item()  # 0-based class index
+        pred_class = output.argmax().item()
     skin_tone, colors = palettes.get(pred_class, ("Unknown", ["#FFFFFF"]))
     return {
         "skin_tone": f"Class {pred_class + 1} ({skin_tone})",
