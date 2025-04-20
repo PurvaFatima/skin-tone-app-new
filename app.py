@@ -1,6 +1,8 @@
+import os
+import requests
+import torch
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-import torch
 from torchvision import transforms
 from PIL import Image
 from io import BytesIO
@@ -17,9 +19,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Download model file at startup
+MODEL_URL = "https://drive.google.com/file/d/1fXSd1cKcn02dxjf_F7Wn0YPXyC8XFQhj/view?usp=sharing"  # Replace with Google Drive/Dropbox direct link
+MODEL_PATH = "resnet_checkpoint.pth"
+
+if not os.path.exists(MODEL_PATH):
+    response = requests.get(MODEL_URL)
+    with open(MODEL_PATH, "wb") as f:
+        f.write(response.content)
+
 # Load model
 model = SkinToneModel(num_classes=10)
-model.load_state_dict(torch.load('resnet_checkpoint.pth', map_location=torch.device('cpu')))
+model.load_state_dict(torch.load(MODEL_PATH, map_location=torch.device('cpu')))
 model.eval()
 
 # Define preprocessing
@@ -59,4 +70,8 @@ async def predict(file: UploadFile = File(...)):
     contents = await file.read()
     image = Image.open(BytesIO(contents)).convert('RGB')
     result = predict_skin_tone(image)
-    return result 
+    return result
+
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
