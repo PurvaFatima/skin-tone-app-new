@@ -20,7 +20,7 @@ app.add_middleware(
 )
 
 # Download model file at startup
-MODEL_URL = "https://drive.google.com/file/d/11lVY8crVCZIQptUjqrXpWDgVsRSHS-Qj/view?usp=sharing"  
+MODEL_URL = "https://drive.google.com/file/d/11lVY8crVCZIQptUjqrXpWDgVsRSHS-Qj/view?usp=sharings"  
 MODEL_PATH = "resnet_checkpoint.pth"
 
 if not os.path.exists(MODEL_PATH):
