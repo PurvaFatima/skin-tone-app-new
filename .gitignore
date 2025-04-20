@@ -1,6 +1,8 @@
 venv/
 __pycache__/
-*.pth
+*.pyc
 *.jpg
-*.png
 *.jpeg
+*.png
+# keep model file
+# *.pth ← comment this out or delete it
