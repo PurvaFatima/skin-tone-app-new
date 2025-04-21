@@ -4,5 +4,5 @@ __pycache__/
 *.jpg
 *.jpeg
 *.png
-# keep model file
-# *.pth ← comment this out or delete it
+test_model.py
+test_model_with_prediction.py
